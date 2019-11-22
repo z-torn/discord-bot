@@ -19,7 +19,7 @@ from orator import DatabaseManager
 
 from bot.utils import Bot_Logging, Bot_Settings, Bot_Utils, MakeSettings
 
-__version__ = "1.0.0"
+__version__ = "0.5.0"
 
 # Bot settings save path
 settings_path = "./bot/database/json/"
