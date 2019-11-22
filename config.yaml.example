@@ -1,0 +1,14 @@
+discord:
+  TOKEN:
+
+databases:
+    default: discord
+    discord:
+        driver: sqlite
+        host: 
+        database: bot\database\discord_db
+        user: 
+        password: 
+        prefix: 
+        log_queries: True
+  
