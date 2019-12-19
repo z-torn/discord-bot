@@ -8,7 +8,6 @@ class MakeSettings:
         settings += "bot_settings.json"
         if not os.path.isfile(settings):
             self.config = jthon.load(settings)
-            self.token = None
             self.prefix = ["!"]
             self.description = None
             self.pm_help = False
@@ -36,7 +35,9 @@ class MakeSettings:
             self.prefix = prefix.split(" ")
         description = input("Please enter you bots description (optional):  ")
         self.description = f"""{description}"""
-        pm = input("Would you like the help menu to be sent in a PM? (y/n): ")
+        pm = input(
+            "Would you like the help menu to be sent in a PM? (y/n)\n(This option has been removed from discord.py): "
+        )
         if pm.lower() in ["y", "yes"]:
             self.pm_help = True
         case_insensitive = input(
