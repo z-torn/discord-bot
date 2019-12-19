@@ -40,19 +40,20 @@ class Bot_Settings(commands.Cog):
         self.bot.settings.save()
         await ctx.channel.send(f"The bots description is now ```{description}```")
 
-    @checks.is_owner_or_coowner()
-    @commands.command()
-    async def toggle_help(self, ctx):
-        """: Toggle how the bot send the help menu in a pm"""
-        self.bot.pm_help = not self.bot.pm_help
-        self.bot.settings.data["Bot Settings"]["pm_help"] = not self.bot.settings.data[
-            "Bot Settings"
-        ]["pm_help"]
-        self.bot.settings.save()
-        if self.bot.pm_help:
-            await ctx.channel.send("The help menu will be sent as a PM now.")
-        else:
-            await ctx.channel.send("The help menu will be posted locally.")
+    # pm_help attribute was removed, might make another command that does the same thing later
+    # @checks.is_owner_or_coowner()
+    # @commands.command()
+    # async def toggle_help(self, ctx):
+    #     """: Toggle how the bot send the help menu in a pm"""
+    #     self.bot.pm_help = not self.bot.pm_help
+    #     self.bot.settings.data["Bot Settings"]["pm_help"] = not self.bot.settings.data[
+    #         "Bot Settings"
+    #     ]["pm_help"]
+    #     self.bot.settings.save()
+    #     if self.bot.pm_help:
+    #         await ctx.channel.send("The help menu will be sent as a PM now.")
+    #     else:
+    #         await ctx.channel.send("The help menu will be posted locally.")
 
     @checks.is_owner_or_coowner()
     @commands.command()
