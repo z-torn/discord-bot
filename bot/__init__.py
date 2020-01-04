@@ -19,7 +19,7 @@ from orator import DatabaseManager
 
 from bot.utils import Bot_Logging, Bot_Settings, Bot_Utils, MakeSettings
 
-__version__ = "0.5"
+__version__ = "0.6"
 
 # Bot settings save path
 settings_path = "./bot/database/json/"
@@ -38,7 +38,11 @@ with open("config.yaml") as file:
 # Create a discord bot instance
 bot_instance = commands.Bot(**settings.data.get("Bot Settings"))
 
-# Basic message to console when the bot has loaded successfully
+# Setup the database manager for Orator
+database = DatabaseManager(config.get("databases"))
+bot_instance.db = database
+
+# Basic message to console when the bot is ready
 @bot_instance.event
 async def on_ready():
     print(f"Logged in as: {bot_instance.user.name}")
@@ -48,15 +52,14 @@ async def on_ready():
 
 # pull all extensions from the cogs folder
 def load_extensions():
-    files = Path("bot/extensions").rglob("*.py")
+    files = Path("bot", "extensions").rglob("*.py")
     extensions = (
-        f"{file.relative_to(Path()).with_suffix('')}".replace("\\", ".")
+        file.as_posix()[:-3].replace("/", ".")
         for file in files
         if "__init__" not in file.name
     )
     # load cogs and commands from the bot.extensions folder
     for extension in extensions:
-        # print(extension)
         try:
             bot_instance.load_extension(extension)
             print(f"Loaded {extension}")
