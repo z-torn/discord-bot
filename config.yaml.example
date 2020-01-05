@@ -6,7 +6,7 @@ databases:
     discord:
         driver: sqlite
         host: 
-        database: bot\database\discord_db
+        database: bot\database\discord.db
         user: 
         password: 
         prefix: 
