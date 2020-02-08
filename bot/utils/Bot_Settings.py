@@ -7,11 +7,11 @@ from .Bot_Logging import human
 
 class Bot_Settings(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
+        self.bot: commands.Bot = bot
 
     @checks.is_owner_or_coowner()
     @commands.command(aliases=["sp"])
-    async def set_prefix(self, ctx, *, prefix: str = "!"):
+    async def set_prefix(self, ctx: commands.Context, *, prefix: str = "!"):
         """: Change the prefix for using bot commands. This will overwrite all prefixes."""
         prefix = prefix.split(" ")
         self.bot.command_prefix = prefix
@@ -23,7 +23,7 @@ class Bot_Settings(commands.Cog):
 
     @checks.is_owner_or_coowner()
     @commands.command(name="toggle_traceback")
-    async def _print_traceback(self, ctx):
+    async def _print_traceback(self, ctx: commands.Context):
         """: Toggle printing the traceback for debugging"""
         self.bot.settings.data["traceback"] = not self.bot.settings.data["traceback"]
         self.bot.settings.save()
@@ -33,31 +33,29 @@ class Bot_Settings(commands.Cog):
 
     @checks.is_owner_or_coowner()
     @commands.command()
-    async def change_description(self, ctx, *, description: str = ""):
+    async def change_description(self, ctx: commands.Context, *, description: str = ""):
         """: Change the description for the bot displayed in the help menu"""
         self.bot.description = description
         self.bot.settings.data["Bot Settings"]["description"] = description
         self.bot.settings.save()
         await ctx.channel.send(f"The bots description is now ```{description}```")
 
-    # pm_help attribute was removed, might make another command that does the same thing later
-    # @checks.is_owner_or_coowner()
-    # @commands.command()
-    # async def toggle_help(self, ctx):
-    #     """: Toggle how the bot send the help menu in a pm"""
-    #     self.bot.pm_help = not self.bot.pm_help
-    #     self.bot.settings.data["Bot Settings"]["pm_help"] = not self.bot.settings.data[
-    #         "Bot Settings"
-    #     ]["pm_help"]
-    #     self.bot.settings.save()
-    #     if self.bot.pm_help:
-    #         await ctx.channel.send("The help menu will be sent as a PM now.")
-    #     else:
-    #         await ctx.channel.send("The help menu will be posted locally.")
+    @checks.is_owner_or_coowner()
+    @commands.command()
+    async def toggle_help(self, ctx: commands.Context):
+        """: Toggle how the bot send the help menu in a pm"""
+        dm_help = not self.bot.help_command.dm_help
+        self.bot.help_command = commands.DefaultHelpCommand(dm_help=dm_help)
+        self.bot.settings.data["Bot Settings"]["pm_help"] = dm_help
+        self.bot.settings.save()
+        if dm_help:
+            await ctx.channel.send("The help menu will be sent as a PM now.")
+        else:
+            await ctx.channel.send("The help menu will be posted locally.")
 
     @checks.is_owner_or_coowner()
     @commands.command()
-    async def add_coowner(self, ctx, member: discord.Member = None):
+    async def add_coowner(self, ctx: commands.Context, member: discord.Member = None):
         """: Add a co-owner to your bot
         WARNING!! A coowner can use the same commands as the owner!"""
         config = self.bot.settings
@@ -75,7 +73,9 @@ class Bot_Settings(commands.Cog):
 
     @checks.is_owner_or_coowner()
     @commands.command()
-    async def remove_coowner(self, ctx, member: discord.Member = None):
+    async def remove_coowner(
+        self, ctx: commands.Context, member: discord.Member = None
+    ):
         ": Remove a co-owner from your bot"
         config = self.bot.settings
         if member is None:
@@ -92,7 +92,7 @@ class Bot_Settings(commands.Cog):
 
     @checks.is_owner_or_coowner()
     @commands.command()
-    async def coowners(self, ctx):
+    async def coowners(self, ctx: commands.Context):
         ": Check the co-owners of a bot"
         coowners = ""
         for coowner in self.bot.settings.data.get("coowners", []):

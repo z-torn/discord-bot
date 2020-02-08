@@ -20,12 +20,11 @@ Transforming common checks into its own decorator:
 """
 
 import discord
-import jthon
 from discord.ext import commands
 
 
 def is_owner_or_coowner():
-    "Checks for if the user is the bot owner or a coowner"
+    "Checks if the user is the bot owner or a coowner"
 
     async def predicate(ctx):
         coowners = ctx.bot.settings.data.get("coowners", [])
@@ -38,27 +37,13 @@ def is_owner_or_coowner():
     return commands.check(predicate)
 
 
-def is_server_owner():
-    """Checks if the message author is the server owner"""
+def is_guild_owner():
+    """Checks if the message author is the guild owner"""
 
     def predicate(ctx):
         if not ctx.guild:
             return False
         if ctx.author is ctx.guild.owner:
-            return True
-        return False
-
-    return commands.check(predicate)
-
-
-def is_admin():
-    """Checks if the message author admin perms"""
-
-    def predicate(ctx):
-        if not ctx.guild:
-            return False
-        author = ctx.author
-        if ("administrator", True) in author.guild_permissions:
             return True
         return False
 

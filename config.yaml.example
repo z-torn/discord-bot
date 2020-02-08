@@ -1,5 +1,5 @@
 discord:
-  TOKEN:
+    TOKEN:
 
 databases:
     default: discord
@@ -12,3 +12,9 @@ databases:
         prefix: 
         log_queries: True
   
+config:
+  utils:
+    bot_logging: True
+    bot_settings: True
+    bot_utils: True
+  logging_mode: 'w'

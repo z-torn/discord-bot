@@ -35,9 +35,7 @@ class MakeSettings:
             self.prefix = prefix.split(" ")
         description = input("Please enter you bots description (optional):  ")
         self.description = f"""{description}"""
-        pm = input(
-            "Would you like the help menu to be sent in a PM? (y/n)\n(This option has been removed from discord.py): "
-        )
+        pm = input("Would you like the help menu to be sent in a PM? (y/n):")
         if pm.lower() in ["y", "yes"]:
             self.pm_help = True
         case_insensitive = input(
