@@ -61,3 +61,4 @@ These can be enabled/disabled in the config file
 - Added optional config setting specify what default utils to load. Will load all by default.
 - Added optional config to set the default logging mode `logging_mode='w'`
 - Added revised `commands.Bot` class to reserve basic bot attributes, otherwise it's the same as the default class.
+- Revised database config to show valid options for sqlite, mysql, or postgres. Default is sqlite. 

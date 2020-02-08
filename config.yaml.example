@@ -2,15 +2,28 @@ discord:
     TOKEN:
 
 databases:
-    default: discord
-    discord:
-        driver: sqlite
-        host: 
-        database: bot\database\discord.db
-        user: 
-        password: 
-        prefix: 
-        log_queries: True
+    default: sqlite
+    sqlite:
+      driver: sqlite
+      database: bot\database\discord.db
+      log_queries: True
+      prefix:
+    mysql:
+      driver: mysql
+      host:
+      database:
+      port:
+      user:
+      password:
+      log_queries:
+    postgres:
+      driver: postgres
+      host:
+      database:
+      port:
+      user:
+      password:
+      log_queries:
   
 config:
   utils:

@@ -12,8 +12,6 @@ from orator import DatabaseManager
 from bot.utils import MakeSettings
 from bot.utils.basic_bot import BasicBot
 
-from .utils.clean_config import CleanConfig
-
 # Check the installed python version
 if sys.version_info <= (3, 6):
     print("Need Python 3.6 or greater to run this bot. Exiting...")
@@ -32,7 +30,6 @@ settings = MakeSettings(settings="./bot/database/json/").get_settings()
 # Load the config file
 with open("config.yaml") as file:
     config = yaml.load(file, Loader=yaml.FullLoader)
-    config = CleanConfig(config).cleaned
 
 # Create a discord bot instance
 initial = settings.data.get("Bot Settings")
