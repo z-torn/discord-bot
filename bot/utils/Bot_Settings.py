@@ -58,10 +58,10 @@ class Bot_Settings(commands.Cog):
     async def add_coowner(self, ctx: commands.Context, member: discord.Member = None):
         """: Add a co-owner to your bot
         WARNING!! A coowner can use the same commands as the owner!"""
-        config = self.bot.settings
         if member is None:
             return
         else:
+            config = self.bot.settings
             if "coowners" not in config.data:
                 config.data["coowners"] = []
             if member.id not in config.data["coowners"]:
@@ -77,10 +77,10 @@ class Bot_Settings(commands.Cog):
         self, ctx: commands.Context, member: discord.Member = None
     ):
         ": Remove a co-owner from your bot"
-        config = self.bot.settings
         if member is None:
             return
         else:
+            config = self.bot.settings
             if "coowners" not in config.data:
                 config.data["coowners"] = []
             if member.id in config.data["coowners"]:

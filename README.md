@@ -8,7 +8,7 @@ This was mainly created for use with my [discord-bot-cli](https://github.com/str
 
 ## Features
 - Integration with the [Orator ORM](https://orator-orm.com/). Supports the most common SQL database drivers.
-- Straight forward access to aiohttp through the bot with `bot.aiohhtp`. Usage would be something like `response = bot.aiohttp.get("https://www.google.com")`. This should be used instead of something like `requests` for working with the web.
+- Straight forward access to aiohttp through the bot with `bot.aiohhtp`. Usage would be something like `response = await bot.aiohttp.get("https://www.google.com")`. This should be used instead of something like `requests` for working with the web.
 - Straight forward access to the database with `bot.db`. Represents an `orator.DatabaseManager` instance for when you don't want to use the awesome Model representations that Orator has.
 - Built in commands for bot owners to make debugging and logging easier.
 - Auto loading extensions for discord.py. Cogs/Commands can be placed into the respective folders just to keep things organized but you can also create subfolders for keeping groups of Cogs/Commands together for less clutter.

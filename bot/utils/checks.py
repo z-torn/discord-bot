@@ -43,8 +43,6 @@ def is_guild_owner():
     def predicate(ctx):
         if not ctx.guild:
             return False
-        if ctx.author is ctx.guild.owner:
-            return True
-        return False
+        return ctx.author is ctx.guild.owner
 
     return commands.check(predicate)

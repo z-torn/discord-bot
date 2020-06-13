@@ -19,7 +19,7 @@ class Bot_Utils(commands.Cog):
         """
         : Get a list of currently loaded and unloaded extensions. The names can be used for the load/unload/reload commands
         """
-        loaded = "\n".join(extension for extension in self.bot.extensions)
+        loaded = "\n".join(iter(self.bot.extensions))
         unloaded = "\n".join(
             extension
             for extension in collect_extensions()
