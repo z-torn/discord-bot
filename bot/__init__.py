@@ -19,7 +19,7 @@ if sys.version_info <= (3, 6):
     sys.exit()
 
 
-__version__ = "0.7"
+__version__ = "0.7.1"
 
 # Basic invite link for your bot. Specify more permissions on the discord.app site
 invite_link = "https://discordapp.com/api/oauth2/authorize?client_id={}&scope=bot"
@@ -29,7 +29,7 @@ settings = MakeSettings(settings="./bot/database/json/").get_settings()
 
 # Load the config file
 with open("config.yaml") as file:
-    config = yaml.load(file, Loader=yaml.FullLoader)
+    config = yaml.safe_load(file)
 
 # Create a discord bot instance
 initial = settings.data.get("Bot Settings")
