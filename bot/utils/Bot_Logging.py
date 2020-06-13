@@ -66,26 +66,30 @@ class Bot_Logging(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if self.bot.logging.data["log_message"]:
-            if message.author.id != self.bot.user.id:
-                LOGS = logging.getLogger("discord.message")
-                LOGS.info(
-                    f"Server_id: {guild_check(message.guild)} "
-                    f"Author_id: {message.author.id} "
-                    f"Message: {message.content}"
-                )
+        if (
+            self.bot.logging.data["log_message"]
+            and message.author.id != self.bot.user.id
+        ):
+            LOGS = logging.getLogger("discord.message")
+            LOGS.info(
+                f"Server_id: {guild_check(message.guild)} "
+                f"Author_id: {message.author.id} "
+                f"Message: {message.content}"
+            )
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        if self.bot.logging.data["log_message_edit"]:
-            if before.author.id != self.bot.user.id:
-                LOGS = logging.getLogger("discord.message.edit")
-                LOGS.info(
-                    f"Server_id: {guild_check(before.guild)} "
-                    f"Author_id: {before.author.id} "
-                    f"Original: {before.content} "
-                    f"Edited: {after.content}"
-                )
+        if (
+            self.bot.logging.data["log_message_edit"]
+            and before.author.id != self.bot.user.id
+        ):
+            LOGS = logging.getLogger("discord.message.edit")
+            LOGS.info(
+                f"Server_id: {guild_check(before.guild)} "
+                f"Author_id: {before.author.id} "
+                f"Original: {before.content} "
+                f"Edited: {after.content}"
+            )
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error):
