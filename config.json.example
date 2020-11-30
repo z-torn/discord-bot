@@ -1,0 +1,20 @@
+{
+    "BOT": {
+        "case_insensitive": true,
+        "command_prefix": [
+            "!"
+        ],
+        "coowners": [],
+        "description": "This is a discord bot",
+        "pm_help": false
+    },
+    "INTENTS": {},
+    "RESERVED": [],
+    "TOKEN": "",
+    "TRACEBACK": true,
+    "UTILS": {
+        "bot_logging": true,
+        "bot_settings": true,
+        "bot_utils": true
+    }
+}

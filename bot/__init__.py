@@ -4,13 +4,7 @@ from pathlib import Path
 
 import discord
 import jthon
-import yaml
-from aiohttp import ClientSession
 from discord.ext import commands
-from orator import DatabaseManager
-
-from bot.utils import MakeSettings
-from bot.utils.basic_bot import BasicBot
 
 # Check the installed python version
 if sys.version_info <= (3, 6):
@@ -19,34 +13,43 @@ if sys.version_info <= (3, 6):
     sys.exit()
 
 
-__version__ = "0.7.1"
+__version__ = "0.8.0"
 
 # Basic invite link for your bot. Specify more permissions on the discord.app site
 invite_link = "https://discordapp.com/api/oauth2/authorize?client_id={}&scope=bot"
 
-# Get the bot settings or create them if they arenot already made
-settings = MakeSettings(settings="./bot/database/json/").get_settings()
+CONFIG = jthon.load("config")
 
-# Load the config file
-with open("config.yaml") as file:
-    config = yaml.safe_load(file)
+# reserved bot attributes
+reserved = ["config"] + CONFIG.data.get("RESERVED")
 
-# Create a discord bot instance
-initial = settings.data.get("Bot Settings")
-bot_instance = BasicBot(
-    **initial,
-    help_command=commands.DefaultHelpCommand(dm_help=initial.get("pm_help")),
-    db=DatabaseManager(config.get("databases")),
-    settings=settings,
+
+help_command = commands.DefaultHelpCommand(
+    dm_help=CONFIG.data.get("BOT").get("dm_help")
 )
 
 
+class Bot(commands.Bot):
+    def __setattr__(self, name, value):
+        if name in reserved and hasattr(self, name):
+            raise AttributeError(f"{name} is a reserved attribute")
+        return super().__setattr__(name, value)
+
+
+# Sets default intents, reference https://discordpy.readthedocs.io/en/latest/intents.html?highlight=gateway%20intents
+intents = CONFIG.data.get("INTENTS")
+INTENTS = discord.Intents.default() if not intents else discord.Intents(**intents)
+
+INSTANCE = Bot(**CONFIG.data.get("BOT"), help_command=help_command, intents=INTENTS)
+
+INSTANCE.config = CONFIG
+
 # Basic message to console when the bot is ready
-@bot_instance.event
+@INSTANCE.event
 async def on_ready():
-    print(f"Logged in as: {bot_instance.user.name}")
-    print(f"With user ID: {bot_instance.user.id}")
-    print(f"Invite Link: {invite_link.format(bot_instance.user.id)}\n")
+    print(f"Logged in as: {INSTANCE.user.name}")
+    print(f"With user ID: {INSTANCE.user.id}")
+    print(f"Invite Link: {invite_link.format(INSTANCE.user.id)}\n")
 
 
 # pull all potential extensions from the extensions folder
@@ -61,7 +64,7 @@ def collect_extensions():
 def load_extensions():
     for extension in collect_extensions():
         try:
-            bot_instance.load_extension(extension)
+            INSTANCE.load_extension(extension)
             print(f"Loaded {extension}")
         except Exception as e:
             print(f"Failed to load extension {extension}\n{e}")
@@ -70,17 +73,17 @@ def load_extensions():
 
 def run():
     # Load bot utilities if enabled in the config
-    utils = config.get("config", {}).get("utils", {})
+    utils = CONFIG.data.get("UTILS", {})
     from .utils import Bot_Logging, Bot_Settings, Bot_Utils
 
     if utils.get("bot_logging", True):
-        bot_instance.add_cog(Bot_Logging.Bot_Logging(bot_instance))
+        INSTANCE.add_cog(Bot_Logging(INSTANCE))
     if utils.get("bot_settings", True):
-        bot_instance.add_cog(Bot_Settings.Bot_Settings(bot_instance))
+        INSTANCE.add_cog(Bot_Settings(INSTANCE))
     if utils.get("bot_utils", True):
-        bot_instance.add_cog(Bot_Utils.Bot_Utils(bot_instance))
+        INSTANCE.add_cog(Bot_Utils(INSTANCE))
 
     load_extensions()
 
     # Run the bot
-    bot_instance.run(config.get("discord").get("TOKEN"))
+    INSTANCE.run(CONFIG.data.get("TOKEN"))

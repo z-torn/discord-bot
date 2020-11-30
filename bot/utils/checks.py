@@ -27,7 +27,7 @@ def is_owner_or_coowner():
     "Checks if the user is the bot owner or a coowner"
 
     async def predicate(ctx):
-        coowners = ctx.bot.settings.data.get("coowners", [])
+        coowners = ctx.bot.config.data.get("coowners", [])
         bot = await ctx.bot.application_info()
         if ctx.author.id in coowners:
             return True
